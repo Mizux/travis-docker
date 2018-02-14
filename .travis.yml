@@ -3,6 +3,37 @@ sudo: required
 services:
   - docker
 
+matrix:
+  include:
+    - os: linux
+      env: DISTRO=native BUILD_TYPE=make
+    - os: linux
+      env: DISTRO=alpine BUILD_TYPE=make
+    - os: linux
+      env: DISTRO=ubuntu BUILD_TYPE=make
+    - os: linux
+      env: DISTRO=native BUILD_TYPE=cmake
+    - os: linux
+      env: DISTRO=alpine BUILD_TYPE=cmake
+    - os: linux
+      env: DISTRO=ubuntu BUILD_TYPE=cmake
+    - os: osx
+      language: cpp
+      compiler: gcc
+      env: BUILD_TYPE=make
+    - os: osx
+      language: cpp
+      compiler: clang
+      env: BUILD_TYPE=make
+    - os: osx
+      language: cpp
+      compiler: gcc
+      env: BUILD_TYPE=cmake
+    - os: osx
+      language: cpp
+      compiler: clang
+      env: BUILD_TYPE=cmake
+
 install: true
 
 script:
