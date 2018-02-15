@@ -11,6 +11,7 @@ if [ "${DISTRO}" == native ]; then
   if [ "${TRAVIS_OS_NAME}" == linux ]; then
 		export PATH="${HOME}"/swig/bin:"${PATH}"
 	fi
+	set -x
 	git --version;
 	clang --version || true;
 	gcc --version || true;
@@ -18,6 +19,7 @@ if [ "${DISTRO}" == native ]; then
 	swig -version || true;
 	python3.6 --version || true;
 	python3.6 -m pip --version || true;
+	set +x
 
 	cd project;
 	if [ "${BUILDER}" == make ]; then

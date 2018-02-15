@@ -6,14 +6,20 @@ set -e
 if [ "${TRAVIS_OS_NAME}" == linux ] && [ "${DISTRO}" == native ] && [ "${BUILDER}" == make ]; then
 	if [ "${LANGUAGE}" == cc ]; then
 		sudo apt-get -y install git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
-	elif [ "${LANGUAGE}" == python ];then
-		sudo apt-get -y install swig git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
+	else
+		cd /tmp/ &&	curl -s -J -O -k -L \
+			'https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz/download' && \
+			tar zxf swig-3.0.12.tar.gz && cd swig-3.0.12 && \
+			./configure --prefix "${HOME}"/swig/ && make && make install;
+	fi
+	if [ "${LANGUAGE}" == python ];then
+		sudo apt-get -y install git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
 		pyenv global system 3.6;
 		python3.6 -m pip install virtualenv wheel six;
 	elif [ "${LANGUAGE}" == java ];then
-		sudo apt-get -y install default-jdk swig git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
+		sudo apt-get -y install default-jdk git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
 	elif [ "${LANGUAGE}" == csharp ];then
-		sudo apt-get -y install mono-complete swig git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
+		sudo apt-get -y install mono-complete git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
 	fi
 fi
 
@@ -22,7 +28,7 @@ if [ "${TRAVIS_OS_NAME}" == linux ] && [ "${DISTRO}" == native ] && [ "${BUILDER
 	cd /tmp/ &&	curl -s -J -O -k -L \
 		'https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz/download' && \
 		tar zxf swig-3.0.12.tar.gz && cd swig-3.0.12 && \
-		./configure --prefix "${HOME}"/swig/ && make && make install && \
+		./configure --prefix "${HOME}"/swig/ && make && make install;
 	pyenv global system 3.6;
 	python3.6 -m pip install virtualenv wheel;
 fi
