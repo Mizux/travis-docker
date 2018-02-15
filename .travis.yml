@@ -1,40 +1,76 @@
-language: generic
 sudo: required
+language: generic
 services:
   - docker
 
 matrix:
   include:
+# Former Makefile builder
     - os: linux
-      env: DISTRO=native BUILD_TYPE=make
-    - os: linux
-      env: DISTRO=alpine BUILD_TYPE=make
-    - os: linux
-      env: DISTRO=ubuntu BUILD_TYPE=make
-    - os: linux
-      env: DISTRO=native BUILD_TYPE=cmake
-    - os: linux
-      env: DISTRO=alpine BUILD_TYPE=cmake
-    - os: linux
-      env: DISTRO=ubuntu BUILD_TYPE=cmake
-    - os: osx
+      dist: trusty
       language: cpp
       compiler: gcc
-      env: BUILD_TYPE=make
-    - os: osx
-      language: cpp
-      compiler: clang
-      env: BUILD_TYPE=make
-    - os: osx
+      env: DISTRO=native BUILDER=make LANGUAGE=cc
+    - os: linux
+      dist: trusty
       language: cpp
       compiler: gcc
-      env: BUILD_TYPE=cmake
-    - os: osx
+      env: DISTRO=native BUILDER=make LANGUAGE=python
+    - os: linux
+      dist: trusty
       language: cpp
-      compiler: clang
-      env: BUILD_TYPE=cmake
+      compiler: gcc
+      env: DISTRO=native BUILDER=make LANGUAGE=java
+    - os: linux
+      dist: trusty
+      language: cpp
+      compiler: gcc
+      env: DISTRO=native BUILDER=make LANGUAGE=csharp
 
-install: true
+    - os: osx
+      language: cpp
+      compiler: gcc
+      env: DISTRO=native BUILDER=make LANGUAGE=cc
+    - os: osx
+      language: cpp
+      compiler: gcc
+      env: DISTRO=native BUILDER=make LANGUAGE=python
+    - os: osx
+      language: cpp
+      compiler: clang
+      env: DISTRO=native BUILDER=make LANGUAGE=cc
+    - os: osx
+      language: cpp
+      compiler: clang
+      env: DISTRO=native BUILDER=make LANGUAGE=python
+# Experimental CMake Builder
+    - os: linux
+      env: DISTRO=alpine BUILDER=cmake
+    - os: linux
+      env: DISTRO=ubuntu BUILDER=cmake
+
+    - os: linux
+      dist: trusty
+      language: cpp
+      compiler: gcc
+      env: DISTRO=native BUILDER=cmake
+    - os: linux
+      dist: trusty
+      language: cpp
+      compiler: clang
+      env: DISTRO=native BUILDER=cmake
+
+    - os: osx
+      language: cpp
+      compiler: gcc
+      env: DISTRO=native BUILDER=cmake
+    - os: osx
+      language: cpp
+      compiler: clang
+      env: DISTRO=native BUILDER=cmake
+
+install:
+  - ./.travis/install.sh
 
 script:
   - ./.travis/script.sh

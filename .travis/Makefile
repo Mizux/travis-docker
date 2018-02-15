@@ -4,19 +4,24 @@ help:
 	@echo "make configure: execute 'make third_party' using the devel image container"
 	@echo "make cc: execute 'make cc' using the devel image container"
 	@echo "make python: execute 'make python' using the devel image container"
-	@echo "make install: execute the cmake target install using the devel image container, then create an install image with it"
+	@echo "make install: execute the cmake target install using the devel image container,\
+ then create an install image with it"
 	@echo "make test_install: configure a sample project against it using the install image container"
 	@echo "make clean: execute the cmake target clean"
 	@echo "make distclean: execute clean and also remove all docker images"
 	@echo ""
-	@echo "note: Currently test are done on alpine and ubuntu, you can add \"_<distro>\"" \
-" at end of the previous targets to run only test on this distro (e.g make test_install_alpine)."
+	@echo "note: Currently test are done on alpine and ubuntu,\
+ you can add \"_<distro>\" at end of the previous targets to run only test on this distro\
+ (e.g make test_install_alpine)."
 	@echo "note: All generated code will be located in the cache/ folder, use distclean to remove it"
+	@echo "make print-VAR: print value of VAR for debug purpose"
 
 # Need to add cmd_distro to PHONY otherwise target are ignored since they don't
 # contain recipe (using FORCE don't work here)
 .PHONY: help all
 all: build
+
+ROOT_DIR := $(realpath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 
 IMAGE := ortools
 UID := $(shell id -u)
@@ -145,3 +150,6 @@ distclean-%::
 		"rm -rf cache/$*"
 	docker image rm -f ${IMAGE}_$*:devel 2>/dev/null
 	docker image rm -f ${IMAGE}_$*:install 2>/dev/null
+
+# debug purpose
+print-%  : ; @echo $* = $($*)

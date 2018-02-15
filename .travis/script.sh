@@ -1,36 +1,37 @@
 #!/usr/bin/env bash
+set -x
 set -e
 
-# On linux build inside docker to test several distro.
-# also it means we can test locally.
-if [ "${TRAVIS_OS_NAME}" == linux ]; then
-	make docker_"${DISTRO}";
-	make build_"${DISTRO}";
-elif [ "${TRAVIS_OS_NAME}" == osx ]; then
-	# work around https://github.com/travis-ci/travis-ci/issues/8552
-	sudo chown -R "$(whoami)" /usr/local;
-	brew update;
-	brew install swig;
-	brew install python3;
-else
-	echo "OS name \"${TRAVIS_OS_NAME}\" unknown" && false;
-fi
+# Clone the OR-Tools repository
+git clone --single-branch https://github.com/google/or-tools.git project;
 
-# On MacOS build natively since macos container is not so simple.
-if [ "${DISTRO}" == native ] || [ "${TRAVIS_OS_NAME}" == osx ]; then
+# Native build using Makefile
+if [ "${DISTRO}" == native ]; then
 	git --version;
 	clang --version || gcc --version;
 	cmake --version;
-	git clone --single-branch --depth 2 https://github.com/google/or-tools.git project;
-	cd project;
-fi
+	swig --version;
+  python3.6 --version
+  python3.6 -m pip --version
 
-if [ "${BUILD_TYPE}" == make ]; then
-	make detect
-	make third_party
-	make cc && make test_cc
-	make python && make test_python
-	make csharp && make test_csharp
-	make java && make test_java
-	make
+	cd project;
+	if [ "${BUILDER}" == make ]; then
+		make --version
+		make detect
+		make third_party
+		make "${LANGUAGE}"
+		make test_"${LANGUAGE}"
+	elif [ "${BUILDER}" == cmake ]; then
+		cmake -H. -Bbuild
+		cmake --build build --target all -- VERBOSE=1
+		cmake --build build --target test -- CTEST_OUTPUT_ON_FAILURE=1
+	fi
+# Linux Docker build using CMake
+elif [ "${TRAVIS_OS_NAME}" == linux ] && [ "${BUILDER}" == cmake ]; then
+	make docker_"${DISTRO}"
+	make configure_"${DISTRO}"
+	make build_"${DISTRO}"
+	make test_"${DISTRO}"
+	make install_"${DISTRO}"
+	make test_install_"${DISTRO}"
 fi
