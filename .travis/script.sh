@@ -2,10 +2,15 @@
 set -e
 
 # Clone the OR-Tools repository
-git clone --single-branch https://github.com/google/or-tools.git project;
+if [ ! -d project ]; then
+	git clone --single-branch https://github.com/google/or-tools.git project;
+fi
 
 # Native build using Makefile
 if [ "${DISTRO}" == native ]; then
+  if [ "${TRAVIS_OS_NAME}" == linux ]; then
+		export PATH="${HOME}"/swig/bin:"${PATH}"
+	fi
 	git --version;
 	clang --version || true;
 	gcc --version || true;
@@ -30,11 +35,13 @@ if [ "${DISTRO}" == native ]; then
 	fi
 	# Linux Docker build using CMake
 elif [ "${TRAVIS_OS_NAME}" == linux ] && [ "${BUILDER}" == cmake ]; then
+	CURRENT_DIR=$(dirname "$(readlink -f "$0")")
+	MAKE="make -f ${CURRENT_DIR}/Makefile"
 	set -x
-	make docker_"${DISTRO}"
-	make configure_"${DISTRO}"
-	make build_"${DISTRO}"
-	make test_"${DISTRO}"
-	make install_"${DISTRO}"
-	make test_install_"${DISTRO}"
+	${MAKE} print-ROOT_DIR
+	${MAKE} docker_"${DISTRO}"
+	${MAKE} configure_"${DISTRO}" -d
+	${MAKE} build_"${DISTRO}"
+	${MAKE} test_"${DISTRO}"
+	${MAKE} install_"${DISTRO}"
 fi

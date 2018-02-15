@@ -23,8 +23,6 @@ if [ "${TRAVIS_OS_NAME}" == linux ] && [ "${DISTRO}" == native ] && [ "${BUILDER
 		'https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz/download' && \
 		tar zxf swig-3.0.12.tar.gz && cd swig-3.0.12 && \
 		./configure --prefix "${HOME}"/swig/ && make && make install && \
-		export PATH="${HOME}"/swig/bin:"${PATH}" && \
-		cd "${TRAVIS_BUILD_DIR}";
 	pyenv global system 3.6;
 	python3.6 -m pip install virtualenv wheel;
 fi
