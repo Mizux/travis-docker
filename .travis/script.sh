@@ -18,10 +18,10 @@ if [ "${DISTRO}" == native ]; then
 	if [ "${BUILDER}" == make ]; then
 		set -x
 		make --version
-		make detect
-		make third_party
-		make "${LANGUAGE}"
-		make test_"${LANGUAGE}"
+		make detect UNIX_PYTHON_VER=3.6
+		make third_party UNIX_PYTHON_VER=3.6
+		make "${LANGUAGE}" UNIX_PYTHON_VER=3.6
+		make test_"${LANGUAGE}" UNIX_PYTHON_VER=3.6
 	elif [ "${BUILDER}" == cmake ]; then
 		set -x
 		cmake -H. -Bbuild
