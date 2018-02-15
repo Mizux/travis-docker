@@ -10,9 +10,11 @@ if [ "${DISTRO}" == native ]; then
 	git --version;
 	clang --version || gcc --version;
 	cmake --version;
-	swig --version;
-  python3.6 --version
-  python3.6 -m pip --version
+	if [ "${LANGUAGE}" == python ]; then
+		swig -version;
+		python3.6 --version
+		python3.6 -m pip --version
+	fi
 
 	cd project;
 	if [ "${BUILDER}" == make ]; then
