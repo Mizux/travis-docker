@@ -9,7 +9,6 @@ fi
 # Native build using Makefile
 if [ "${DISTRO}" == native ]; then
   if [ "${TRAVIS_OS_NAME}" == linux ]; then
-		export JAVA_HOME=/usr/bin
 		export PATH="${HOME}"/swig/bin:"${PATH}"
 		pyenv global system 3.6;
 	fi
@@ -27,10 +26,14 @@ if [ "${DISTRO}" == native ]; then
 	if [ "${BUILDER}" == make ]; then
 		set -x
 		make --version
-		make detect UNIX_PYTHON_VER=3.6
-		make third_party UNIX_PYTHON_VER=3.6
-		make "${LANGUAGE}" UNIX_PYTHON_VER=3.6
-		make test_"${LANGUAGE}" UNIX_PYTHON_VER=3.6
+		if [ "${TRAVIS_OS_NAME}" == linux ]; then
+			make detect JDK_DIRECTORY=/usr UNIX_PYTHON_VER=3.6
+		else
+			make detect UNIX_PYTHON_VER=3.6
+		fi
+		make third_party
+		make "${LANGUAGE}"
+		make test_"${LANGUAGE}"
 	elif [ "${BUILDER}" == cmake ]; then
 		set -x
 		cmake -H. -Bbuild

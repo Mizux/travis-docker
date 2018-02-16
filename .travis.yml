@@ -1,5 +1,5 @@
 sudo: required
-language: none
+language: generic
 
 matrix:
   include:
@@ -47,8 +47,8 @@ matrix:
       services:
         - docker
       env: DISTRO=alpine BUILDER=cmake
-        - os: linux
-          language: generic
+    - os: linux
+      language: generic
       services:
         - docker
       env: DISTRO=ubuntu BUILDER=cmake
