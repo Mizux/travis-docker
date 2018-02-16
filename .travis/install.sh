@@ -14,14 +14,14 @@ fi
 
 # Linux Native build using Makefile
 if [ "${TRAVIS_OS_NAME}" == linux ] && [ "${DISTRO}" == native ] && [ "${BUILDER}" == make ]; then
-	sudo apt-get -y install \
+	sudo apt-get -yqq install \
 		git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
 	if [ "${LANGUAGE}" == python ];then
 		python3.6 -m pip install six;
 	elif [ "${LANGUAGE}" == java ];then
-		sudo apt-get -y install default-jdk;
+		sudo apt-get -yqq install default-jdk;
 	elif [ "${LANGUAGE}" == csharp ];then
-		sudo apt-get -y install mono-complete;
+		sudo apt-get -yqq install mono-complete;
 	fi
 fi
 
