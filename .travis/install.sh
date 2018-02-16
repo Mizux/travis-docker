@@ -9,7 +9,6 @@ if [ "${TRAVIS_OS_NAME}" == linux ] && [ "${DISTRO}" == native ]; then
 		tar zxf swig-3.0.12.tar.gz && cd swig-3.0.12 && \
 		./configure --prefix "${HOME}"/swig/ && make && make install;
 	pyenv global system 3.6;
-	python3.6 -m pip install virtualenv wheel;
 fi
 
 # Linux Native build using Makefile
@@ -17,7 +16,7 @@ if [ "${TRAVIS_OS_NAME}" == linux ] && [ "${DISTRO}" == native ] && [ "${BUILDER
 	sudo apt-get -yqq install \
 		git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
 	if [ "${LANGUAGE}" == python ];then
-		python3.6 -m pip install six;
+		python3.6 -m pip install -q virtualenv wheel six;
 	elif [ "${LANGUAGE}" == java ];then
 		sudo apt-get -yqq install default-jdk;
 	elif [ "${LANGUAGE}" == csharp ];then
