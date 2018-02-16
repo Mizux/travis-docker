@@ -1,7 +1,5 @@
 sudo: required
-language: generic
-services:
-  - docker
+language: none
 
 matrix:
   include:
@@ -29,24 +27,30 @@ matrix:
 
     - os: osx
       language: cpp
-      compiler: gcc
-      env: DISTRO=native BUILDER=make LANGUAGE=cc
-    - os: osx
-      language: cpp
-      compiler: gcc
-      env: DISTRO=native BUILDER=make LANGUAGE=python
-    - os: osx
-      language: cpp
       compiler: clang
       env: DISTRO=native BUILDER=make LANGUAGE=cc
     - os: osx
       language: cpp
       compiler: clang
       env: DISTRO=native BUILDER=make LANGUAGE=python
+    - os: osx
+      language: cpp
+      compiler: clang
+      env: DISTRO=native BUILDER=make LANGUAGE=java
+    - os: osx
+      language: cpp
+      compiler: clang
+      env: DISTRO=native BUILDER=make LANGUAGE=csharp
 # Experimental CMake Builder
     - os: linux
+      language: generic
+      services:
+        - docker
       env: DISTRO=alpine BUILDER=cmake
-    - os: linux
+        - os: linux
+          language: generic
+      services:
+        - docker
       env: DISTRO=ubuntu BUILDER=cmake
 
     - os: linux

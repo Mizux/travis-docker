@@ -9,7 +9,9 @@ fi
 # Native build using Makefile
 if [ "${DISTRO}" == native ]; then
   if [ "${TRAVIS_OS_NAME}" == linux ]; then
+		export JAVA_HOME=/usr/bin
 		export PATH="${HOME}"/swig/bin:"${PATH}"
+		pyenv global system 3.6;
 	fi
 	set -x
 	git --version;
@@ -32,7 +34,7 @@ if [ "${DISTRO}" == native ]; then
 	elif [ "${BUILDER}" == cmake ]; then
 		set -x
 		cmake -H. -Bbuild
-		cmake --build build --target all -- VERBOSE=1
+		cmake --build build --target all
 		cmake --build build --target test -- CTEST_OUTPUT_ON_FAILURE=1
 	fi
 	# Linux Docker build using CMake
@@ -42,7 +44,7 @@ elif [ "${TRAVIS_OS_NAME}" == linux ] && [ "${BUILDER}" == cmake ]; then
 	set -x
 	${MAKE} print-ROOT_DIR
 	${MAKE} docker_"${DISTRO}"
-	${MAKE} configure_"${DISTRO}" -d
+	${MAKE} configure_"${DISTRO}"
 	${MAKE} build_"${DISTRO}"
 	${MAKE} test_"${DISTRO}"
 	${MAKE} install_"${DISTRO}"
