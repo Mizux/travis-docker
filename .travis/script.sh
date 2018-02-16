@@ -27,7 +27,7 @@ if [ "${DISTRO}" == native ]; then
 		set -x
 		make --version
 		if [ "${TRAVIS_OS_NAME}" == linux ]; then
-			make detect JDK_DIRECTORY=/usr UNIX_PYTHON_VER=3.6
+			make detect JDK_DIRECTORY="$(dirname "$(dirname "$(which javac)")")" UNIX_PYTHON_VER=3.6
 		else
 			make detect UNIX_PYTHON_VER=3.6
 		fi
