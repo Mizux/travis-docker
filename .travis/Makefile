@@ -74,7 +74,7 @@ build_alpine: ${ROOT_DIR}/cache/alpine/build.log
 build_ubuntu: ${ROOT_DIR}/cache/ubuntu/build.log
 ${ROOT_DIR}/cache/%/build.log: ${ROOT_DIR}/cache/%/configure.log ${PROJECT_DIR}/ortools
 	${DOCKER_DEVEL_CMD} ${IMAGE}_$*:devel /bin/sh -c \
-		"cmake --build build/$* --target all -- VERBOSE=1"
+		"cmake --build build/$* --target all" #-- VERBOSE=1"
 	@date > $@
 
 # TEST
