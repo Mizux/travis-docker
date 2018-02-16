@@ -30,10 +30,10 @@ if [ "${TRAVIS_OS_NAME}" == osx ] && 	[ "${DISTRO}" == native ]; then
 	# work around https://github.com/travis-ci/travis-ci/issues/8552
 	sudo chown -R "$(whoami)" /usr/local;
 	brew update;
-	if [ "${LANGUAGE}" != cc ]; then
+	if [ "${LANGUAGE}" != cc ] || [ "${BUILDER}" == cmake ]; then
 		brew install swig;
 	fi
-	if [ "${LANGUAGE}" == python ];then
+	if [ "${LANGUAGE}" == python ] || [ "${BUILDER}" == cmake ];then
 		brew install python3;
 	elif [ "${LANGUAGE}" == java ];then
 		brew cask install java;
