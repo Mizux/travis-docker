@@ -8,11 +8,11 @@ fi
 
 # Native build using Makefile
 if [ "${DISTRO}" == native ]; then
-  if [ "${TRAVIS_OS_NAME}" == linux ]; then
-		export PATH="${HOME}"/swig/bin:"${PATH}"
+	set -x
+	if [ "${TRAVIS_OS_NAME}" == linux ]; then
+		export PATH="${HOME}"/swig/bin:"${PATH}";
 		pyenv global system 3.6;
 	fi
-	set -x
 	git --version;
 	clang --version || true;
 	gcc --version || true;
@@ -50,5 +50,4 @@ elif [ "${TRAVIS_OS_NAME}" == linux ] && [ "${BUILDER}" == cmake ]; then
 	${MAKE} configure_"${DISTRO}"
 	${MAKE} build_"${DISTRO}"
 	${MAKE} test_"${DISTRO}"
-	${MAKE} install_"${DISTRO}"
 fi
