@@ -17,6 +17,7 @@ if [ "${BUILDER}" == make ];then
 			sudo apt-get -yqq install \
 				git autoconf libtool zlib1g-dev gawk g++ curl cmake make lsb-release;
 			if [ "${LANGUAGE}" == python ];then
+				pyenv global system 3.6;
 				python3.6 -m pip install -q virtualenv wheel six;
 			elif [ "${LANGUAGE}" == java ];then
 				sudo apt-get -yqq install default-jdk;
@@ -38,6 +39,7 @@ if [ "${BUILDER}" == make ];then
 			fi
 			if [ "${LANGUAGE}" == python ];then
 				brew install python3;
+				python3.6 -m pip install -q virtualenv wheel six;
 			elif [ "${LANGUAGE}" == java ];then
 				brew cask install java;
 			elif [ "${LANGUAGE}" == csharp ];then
