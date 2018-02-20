@@ -28,7 +28,7 @@ if [ "${BUILDER}" == make ];then
 			pyenv global system 3.6;
 			checkenv
 			cd project
-			make detect JDK_DIRECTORY="$(dirname "$(dirname "$(which javac)")")" UNIX_PYTHON_VER=3.6
+			make detect JDK_DIRECTORY=/usr/lib/jvm/java-8-openjdk-amd64 UNIX_PYTHON_VER=3.6
 			make third_party
 			make "${LANGUAGE}"
 			make test_"${LANGUAGE}"
